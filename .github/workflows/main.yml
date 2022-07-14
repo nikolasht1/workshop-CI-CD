@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: koteikin/ci-cd-flask-app
+  REGISTRY: nikolasht1/flaskapi:latest
 
 jobs:
   lint:
@@ -43,8 +43,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -72,7 +72,7 @@ jobs:
           port: 22
           script: |
             # login docker
-            docker login -u $DOCKER_USER -p $DOCKERHUB_TOKEN
+            docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
             docker stop flask-app
 
