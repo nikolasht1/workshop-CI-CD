@@ -120,13 +120,7 @@ jobs:
         id: action-gen-sh-unittest
         uses: vargiuscuola/gen-sh-unittest@master
       - name: gensh-unittest result
-        run:           
+        run: |           
           curl -I 18.193.75.165:80
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Github Action gen-sh-unittest
-        id: action-gen-sh-unittest
-        uses: vargiuscuola/gen-sh-unittest@master
-      - name: gensh-unittest result
-        run:          
+ 
           curl -I 3.73.116.209:80     
