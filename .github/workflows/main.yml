@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: nikolasht1/flaskapi:latest
+  REGISTRY: nikolasht1/flaskapi
 
 jobs:
   lint:
