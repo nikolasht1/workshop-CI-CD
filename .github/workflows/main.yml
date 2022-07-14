@@ -112,6 +112,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     name: report
+    needs: deploy
     steps: 
       - name: curl first server 
         uses: actions/github-script@v6
