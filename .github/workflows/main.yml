@@ -112,7 +112,6 @@ jobs:
   report:
     runs-on: ubuntu-latest
     name: report
-    needs: check_servers
     steps: 
       - name: curl first server 
         uses: actions/github-script@v6
