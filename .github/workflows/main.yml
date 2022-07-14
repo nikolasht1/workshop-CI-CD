@@ -109,17 +109,17 @@ jobs:
             --name flask-app \
             ${{ env.REGISTRY }}:${{ needs.build_and_push.outputs.commit_hash }}
       
-  report:
-    runs-on: ubuntu-latest
-    name: report
-    needs: curl_servers
-    steps: 
-      - name: curl first server  
-        with:
-          script:
-            curl -I 18.193.75.165:80
-      - name: curl second server 
-        with:
-          script:
-            curl -I 3.73.116.209:80     
+#  report:
+#    runs-on: ubuntu-latest
+#    name: report
+#    needs: curl_servers
+#    steps: 
+#      - name: curl first server  
+#        with:
+#          script:
+#            curl -I 18.193.75.165:80
+#      - name: curl second server 
+#        with:
+#          script:
+#            curl -I 3.73.116.209:80     
           
