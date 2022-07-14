@@ -114,11 +114,19 @@ jobs:
     name: report
     needs: deploy
     steps: 
-      - name: curl first server 
-        uses: actions/checkout@v3
-        run:          
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Github Action gen-sh-unittest
+        id: action-gen-sh-unittest
+        uses: vargiuscuola/gen-sh-unittest@master
+      - name: gensh-unittest result
+        run:           
           curl -I 18.193.75.165:80
-      - name: curl second server 
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Github Action gen-sh-unittest
+        id: action-gen-sh-unittest
+        uses: vargiuscuola/gen-sh-unittest@master
+      - name: gensh-unittest result
         run:          
           curl -I 3.73.116.209:80     
