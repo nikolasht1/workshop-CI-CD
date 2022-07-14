@@ -59,14 +59,12 @@ jobs:
     name: Deploy
     needs: build_and_push
     env:
-      HOST: 18.193.75.165
-      HOST1: 3.73.116.209
       USERNAME: ubuntu
     steps:
       - name: Deploy to EC2 instanse via SSH action
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST }}
+          host: 18.193.75.165
           username: ${{ env.USERNAME }}
           key: ${{ secrets.KEY }}
           envs: ${{ secrets.DOCKER_USER }}, ${{ secrets.DOCKER_TOKEN }}
@@ -89,7 +87,7 @@ jobs:
       - name: Deploy to EC2 instanse via SSH action
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST1}}
+          host: 3.73.116.209
           username: ${{ env.USERNAME }}
           key: ${{ secrets.KEY }}
           envs: ${{ secrets.DOCKER_USER }}, ${{ secrets.DOCKER_TOKEN }}
