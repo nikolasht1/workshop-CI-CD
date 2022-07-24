@@ -1,19 +1,13 @@
-FROM ubuntu:20.04
+FROM python:3.8-slim-buster
 
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+WORKDIR /app/
 
-RUN apt-get update -y && apt-get install -y python3-pip
+COPY requirements.txt .env api.py /app/
 
-# We copy just the requirements.txt first to leverage Docker cache
-ADD requirements.txt /app/
-
-WORKDIR /app
-
-RUN /bin/bash -c "pip3 install --no-cache-dir -r requirements.txt"
-
-ADD /app/ /app/
-
+RUN apt-get update \
+      && pip3 install --upgrade pip \
+        && pip3 install --no-cache-dir -r requirements.txt 
+        
 EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "wsgi:app"]
+CMD [ "python3", "api.py", "0.0.0.0:5000", "-b", "-m"]
