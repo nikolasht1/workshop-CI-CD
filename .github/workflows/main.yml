@@ -26,6 +26,8 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v2
 
+ ###################build and push########################    
+
   build_and_push:
     runs-on: ubuntu-latest
     name: Build and push docker image
@@ -54,17 +56,29 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}:${{ steps.commit_hash.outputs.commit_hash }}
 
+########################deploy###########################
   deploy:
+    env:
+      USERNAME: ubuntu
+      WEB1: 18.193.75.165
+      WEB2: 3.73.116.209
     runs-on: ubuntu-latest
     name: Deploy
     needs: build_and_push
-    env:
-      USERNAME: ubuntu
+    strategy:
+      matrix:
+        include:
+          - site: "test1"
+            instance: "web1"
+          - site: "test2"
+            instance: "web2"  
+              
     steps:
       - name: Deploy to EC2 instanse via SSH action
         uses: appleboy/ssh-action@master
         with:
-          host: 18.193.75.165
+          test1: ${{ env.WEB1 }}
+          test2: ${{ env.WEB2 }}
           username: ${{ env.USERNAME }}
           key: ${{ secrets.KEY }}
           envs: ${{ secrets.DOCKER_USER }}, ${{ secrets.DOCKER_TOKEN }}
@@ -84,29 +98,9 @@ jobs:
             --name flask-app \
             ${{ env.REGISTRY }}:${{ needs.build_and_push.outputs.commit_hash }}
 
-      - name: Deploy to EC2 instanse via SSH action
-        uses: appleboy/ssh-action@master
-        with:
-          host: 3.73.116.209
-          username: ${{ env.USERNAME }}
-          key: ${{ secrets.KEY }}
-          envs: ${{ secrets.DOCKER_USER }}, ${{ secrets.DOCKER_TOKEN }}
-          port: 22
-          script: |
-            # login docker
-            sudo docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
-            sudo docker stop flask-app
-
-            sudo docker rm flask-app
-
-            # Run a new container from a new image
-            sudo docker run -d \
-            --restart always \
-            -p 80:5000 \
-            --name flask-app \
-            ${{ env.REGISTRY }}:${{ needs.build_and_push.outputs.commit_hash }}
-      
+ ##############################report################################  
+  
   report:
     runs-on: ubuntu-latest
     name: report
